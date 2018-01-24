@@ -5,31 +5,27 @@ import os
 import sys
 import hashlib
 from collections import defaultdict
-from typing import Dict
+from typing import List
 
 
 CHUNK_SIZE = 4096
  
 
-def find_duplicates(path: str) -> Dict:
+def find_duplicates(path: str) -> List[List[str]]:
     """Find duplicate files in provided folder
 
     Returns:
-        dict of duplicate filenames to corresponding hash
+        list of lists of duplicate filenames
     """
-    hashes = set()
-    duplicates = defaultdict(list)
+    hash_to_files = defaultdict(list)
 
     for entry in os.scandir(path):
         if entry.is_file():
             file_path = os.path.join(path, entry.name)
-
             file_hash = hashfile(file_path)
+            hash_to_files[file_hash].append(file_path)
 
-            if file_hash in hashes:
-                duplicates[file_hash].append(file_path)
-            else:
-                hashes.add(file_hash)
+    duplicates = list(filter(lambda x: len(x) > 1, hash_to_files.values()))
 
     return duplicates
  
@@ -58,7 +54,11 @@ if __name__ == '__main__':
         duplicates = find_duplicates(folder)
 
         if duplicates:
-            print(duplicates)
+            print("Found following duplicate files in folder:")
+
+            for subset in duplicates:
+                print(subset)
+
         else:
             print("No duplicate files found in {}".format(folder))
 
