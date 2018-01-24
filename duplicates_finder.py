@@ -1,5 +1,4 @@
 #/usr/bin/python3
-
 import argparse
 import os
 import sys
@@ -30,11 +29,11 @@ def find_duplicates(path: str) -> List[List[str]]:
     return duplicates
  
  
-def hashfile(fname: str):
+def hashfile(file_path: str):
     """Calculate hash of a file"""
     hash_md5 = hashlib.md5()
 
-    with open(fname, "rb") as f:
+    with open(file_path, "rb") as f:
         for chunk in iter(lambda: f.read(CHUNK_SIZE), b""):
             hash_md5.update(chunk)
 
@@ -56,8 +55,8 @@ if __name__ == '__main__':
         if duplicates:
             print("Found following duplicate files in folder:")
 
-            for subset in duplicates:
-                print(subset)
+            for duplicates_list in duplicates:
+                print(duplicates_list)
 
         else:
             print("No duplicate files found in {}".format(folder))
