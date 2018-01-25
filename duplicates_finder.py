@@ -1,8 +1,8 @@
 #/usr/bin/python3
 import argparse
+import hashlib
 import os
 import sys
-import hashlib
 from collections import defaultdict
 from typing import List
 
@@ -29,7 +29,7 @@ def find_duplicates(path: str) -> List[List[str]]:
     return duplicates
  
  
-def hashfile(file_path: str):
+def hashfile(file_path: str) -> str:
     """Calculate hash of a file"""
     hash_md5 = hashlib.md5()
 
